@@ -1,0 +1,6 @@
+docker build -t fabric .
+sudo cp fabric.sh /usr/local/bin/fabric
+cp -r .config/fabric/my_patterns/* .config/fabric/patterns/
+
+alias fb='docker run --rm -i -v /home/jake/fabric/.config/fabric:/root/.config/fabric -v /mnt/c/Users/jrich/Documents/Obsidian/Documents/Fabric:/root/.config/obsidian fabric fabric'
+alias fbt='docker run --rm -it -v /home/jake/fabric/.config/fabric:/root/.config/fabric -v /mnt/c/Users/jrich/Documents/Obsidian/Documents/Fabric:/root/.config/obsidian fabric'

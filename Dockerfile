@@ -21,8 +21,11 @@ ENV PATH=$GOPATH/bin:$GOROOT/bin:/root/.local/bin:/usr/local/bin:$PATH
 # Create config directory
 RUN mkdir -p /root/.config/fabric
 
+# Create Obsidian directory
+RUN mkdir -p /root/.config/obsidian
+
 # Volume for configuration
-VOLUME /root/.config/fabric
+VOLUME ["/root/.config/fabric", "/root/.config/obsidian"]
 
 # Default command
 CMD [ "fabric", "-h" ]

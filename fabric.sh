@@ -1,6 +1,6 @@
 # Show usage if no arguments provided
 if [ $# -lt 2 ]; then
-    echo "Usage: $0 [-sp <prompt> <pattern> | --transcript <youtube_url> <pattern>]"
+    echo "Usage: $0 [-sp <prompt> <pattern> | --transcript <youtube_url> <pattern> <file_name>]"
     exit 1
 fi
 
@@ -20,13 +20,21 @@ case "$1" in
         ;;
         
     "--transcript")
-        if [ $# -ne 3 ]; then
-            echo "Usage for --transcript: $0 --transcript <youtube_url> <pattern>"
+        if [ $# -ne 4 ]; then
+            echo "Usage for --transcript: $0 --transcript <youtube_url> <pattern> <file_name>"
             exit 1
         fi
         youtube_url="$2"
         pattern="$3"
-        if ! docker run --rm -it -v /home/jake/fabric/.config/fabric:/root/.config/fabric fabric fabric --youtube="$youtube_url" --transcript | docker run --rm -i -v /home/jake/fabric/.config/fabric:/root/.config/fabric fabric fabric -sp "$pattern"; then
+        file_name="/root/.config/obsidian/$4.md"
+        if ! docker run --rm -it \
+              -v /home/jake/fabric/.config/fabric:/root/.config/fabric \
+              -v /mnt/c/Users/jrich/Documents/Obsidian/Documents/Fabric:/root/.config/obsidian \
+              fabric fabric --youtube="$youtube_url" --transcript | \
+            docker run --rm -i \
+              -v /home/jake/fabric/.config/fabric:/root/.config/fabric \
+              -v /mnt/c/Users/jrich/Documents/Obsidian/Documents/Fabric:/root/.config/obsidian \
+              fabric fabric -sp "$pattern" -o "$file_name"; then
             echo "Error: Command execution failed"
             exit 2
         fi
@@ -36,5 +44,5 @@ case "$1" in
         echo "Invalid first argument. Use either -sp or --transcript"
         exit 1
         ;;
-echo ""
 esac
+echo ""
